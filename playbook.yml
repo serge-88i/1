@@ -1,0 +1,22 @@
+- name: установка пакетов cmatrix, cowsay и sl на устройство
+  hosts: ivanov
+  become: true
+  vars:
+    group_name: "{{ name }}"
+  tasks:
+    -name: обновление списка пакетов
+     apt:
+       update_cache: yes
+
+- name: установка пакетов cmatrix, cowsay и sl
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - cmatrix
+    - cowsay
+    - sl
+
+- name: добавление устройства в группу Ivanov
+  command: usermod -a -G {{ group_name }} serge
+  become_user: root
